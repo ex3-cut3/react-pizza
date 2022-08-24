@@ -1,0 +1,41 @@
+@import "../../../scss/variables";
+.search_ {
+	 &root {
+			left: -120px;
+			position: relative;
+
+			@media screen and (max-width: 1145px) {
+				left: 0;
+			}
+
+			@media screen and (max-width: 880px) {
+				 width: 80%;
+			}
+	 }
+
+	 &icon {
+			height: 22px;
+			left: 14px;
+			opacity: .3;
+			position: absolute;
+			top: 12px;
+			width: 22px;
+	 }
+
+	 &input {
+			border: 1px solid rgba(0, 0, 0, .1);
+			border-radius: 10px;
+			font-size: 16px;
+			padding: 12px 20px 12px 42px;
+			width: 100%;
+			transition: all .3s ease-in-out;
+
+			//@media screen and (max-width: 600px) {
+			//	 width: 50%;
+			//}
+
+			&:focus {
+				 box-shadow: 0 0 0 1px rgba($orange, 0.4);
+			}
+	 }
+}
