@@ -1,5 +1,6 @@
 import {Pizza} from "../components/Layout/PizzaBlock/PizzaBlockList";
-import {keysOfObj, SortVariants} from "../store/Navigation/NavigationSlice";
+import {SortVariants} from "../store/Navigation/NavigationTypes";
+import {keysOfObj} from "./helpers";
 
 export const typeNames = ['тонкое', 'традиционное'];
 
@@ -12,7 +13,22 @@ export const sortTypes: SortType[] = [
     {name: 'цене', sortOrder: SortVariants.DESCENDING, convertedAsItemProperty: 'price'},
 ];
 
-export interface SortType {name: string, sortOrder: SortVariants, convertedAsItemProperty: keysOfObj<Pizza>}
+interface Language {
+    name: string,
+    flag: string,
+    shortName: string,
+}
+
+export const languages: Language[] = [
+    {name: 'english', flag: '🇺🇸', shortName: 'en'},
+    {name: 'ukrainian', flag: '🇺🇦', shortName: 'ukr'}
+]
+
+export interface SortType {
+    name: string,
+    sortOrder: SortVariants,
+    convertedAsItemProperty: keysOfObj<Pizza>
+}
 
 export enum PRICE_MULTIPLIERS {
     SMALL_SIZE = 1,

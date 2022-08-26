@@ -1,10 +1,20 @@
-import PageNotFound from "../pages/PageNotFound";
-import Cart from "../pages/Cart";
 import HomeContent from "../pages/HomeContent";
-import Payment from "../pages/Payment";
-import SelectedPizza from "../pages/SelectedPizza";
+import {lazy} from "react";
+import Loadable from 'react-loadable';
+import FullLoader from "../components/Layout/Loader/FullLoader";
 
-export const routes: { path:string, element: (...args: any[]) => JSX.Element }[] = [
+// const Cart = lazy(() => import(/*webpackChunkName: "Cart"*/'../pages/Cart'));
+const Cart = Loadable({
+    loading: FullLoader,
+    loader: ()=> import(/*webpackChunkName: "Cart"*/'../pages/Cart'),
+});
+const SelectedPizza = lazy(() => import(/*webpackChunkName: "SelectedPizza"*/ '../pages/SelectedPizza').then(m => ({
+    default: m.SelectedPizza // if not exporting component as default, but as naming export
+})));
+const Payment = lazy(() => import(/*webpackChunkName: "Payment"*/ '../pages/Payment'));
+const PageNotFound = lazy(() => import(/*webpackChunkName: "NotFound"*/'../pages/PageNotFound'));
+
+export const routes: { path: string, element: any }[] = [
     {
         path: '',
         element: HomeContent,
@@ -14,7 +24,7 @@ export const routes: { path:string, element: (...args: any[]) => JSX.Element }[]
         element: Cart,
     },
     {
-      path: '/payment',
+        path: '/payment',
         element: Payment,
     },
     {

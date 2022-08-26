@@ -1,30 +1,35 @@
 import './scss/app.scss';
-import {useEffect} from "react";
+import {Suspense, useEffect, useRef} from "react";
 import {Route, Routes} from "react-router-dom";
 import {routes} from "./routes/routes";
-import {useActions, useAppSelector} from "./hooks/useRedux";
-import {selectCart} from "./store/Cart/selectors";
+import {useAppSelector} from "./hooks/useRedux";
 import MainLayout from "./MainLayout";
+import {selectCart} from "./store/Cart/selectors";
+import FullLoader from "./components/Layout/Loader/FullLoader";
 
-function App() {
-    const state = useAppSelector(selectCart);
-    const {setCartState} = useActions();
+const App = () => {
+    const {cartItems} = useAppSelector(selectCart);
+    const isMounted = useRef(false);
 
     useEffect(() => {
-        const str = localStorage.getItem('cartState');
-        if (!str) {
-            return;
+        if (isMounted.current) {
+            localStorage.setItem('cartItems', JSON.stringify(cartItems))
+            // console.log('cartItems');
         }
-        const cartState = JSON.parse(str);
-        Object.keys(state).length === Object.keys(cartState).length && setCartState(cartState);
-    }, []);
+        isMounted.current = true;
+    }, [cartItems]);
 
     return (
-            <Routes>
-                <Route path='/' element={<MainLayout/>}>
-                    {routes.map(route => <Route key = {route.path} path = {route.path} element = {<route.element/>}></Route>)}
-                </Route>
-            </Routes>
+        <Routes>
+            <Route path = '/' element = {<MainLayout/>}>
+                {routes.map(route =>
+                    <Route key = {route.path} path = {route.path}
+                           element = {<Suspense fallback = {<FullLoader/>}>
+                               <route.element/>
+                           </Suspense>}>
+                    </Route>)}
+            </Route>
+        </Routes>
     );
 }
 

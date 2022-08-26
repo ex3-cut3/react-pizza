@@ -1,6 +1,8 @@
 import {useActions, useAppSelector} from "../../hooks/useRedux";
 
 const Pagination = ({totalPages}: { totalPages: number }) => {
+    // useWhyDidYouUpdate('pagination', {totalPages});
+
     const {setPage} = useActions();
     const page = useAppSelector(state => state.navigation.sortOptions.page);
 

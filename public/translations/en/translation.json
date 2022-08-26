@@ -1,0 +1,9 @@
+{
+  "description": "Some random US description...",
+  "language": "Language",
+  "from": "From",
+  "currency": "Rubles",
+  "headerDescription": "We serve your most tasty desires",
+  "searchPlaceholder": "Find a pizza",
+  "logoTitle": "React Pizza"
+}

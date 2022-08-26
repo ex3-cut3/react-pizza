@@ -1,5 +1,3 @@
-import React from 'react';
-
 const Payment = () => {
     return (
         <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '15px'}}>

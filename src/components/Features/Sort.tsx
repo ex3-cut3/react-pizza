@@ -1,16 +1,16 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {memo, useEffect, useRef, useState} from 'react';
 import {useAppSelector} from "../../hooks/useRedux";
 import TrendImage from "../Layout/TrendImage";
 import {sortTypes} from "../../utils/constants";
-import {selectNavigation} from "../../store/Navigation/selectors";
+import {selectSortOptions} from "../../store/Navigation/selectors";
 
 export type PopupClick = MouseEvent & {
     path: Node[];
 }
 
-const Sort = ({handleSortSelected}: { handleSortSelected: (index: number, handlePopup: () => void, checkIfSelectedPreviouslySelectedCategory: (index: number) => boolean) => void }) => {
+const Sort = memo(({handleSortSelected}: { handleSortSelected: (index: number, handlePopup: () => void, checkIfSelectedPreviouslySelectedCategory: (index: number) => boolean) => void }) => {
     const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
-    const {sortOptions} = useAppSelector(selectNavigation);
+    const {sortBy, order} = useAppSelector(selectSortOptions);
     const sortRef = useRef(null);
 
     function handleOutsideClick(e: MouseEvent) {
@@ -32,7 +32,7 @@ const Sort = ({handleSortSelected}: { handleSortSelected: (index: number, handle
     }
 
     function checkIfEqual(idx: number) {
-        return sortTypes[idx].convertedAsItemProperty === sortOptions.sortBy && sortTypes[idx].sortOrder === sortOptions.order;
+        return sortTypes[idx].convertedAsItemProperty === sortBy && sortTypes[idx].sortOrder === order;
     }
 
     return (
@@ -52,7 +52,7 @@ const Sort = ({handleSortSelected}: { handleSortSelected: (index: number, handle
                 </svg>
                 <b>Сортировка по:</b>
                 <div style = {{userSelect: 'none'}} onClick = {handleSortPopup}>
-                    {sortTypes.find((sortType, i) => checkIfEqual(i))!.name} {sortOptions.order === 'desc' ? "↓" : '↑'}
+                    {sortTypes.find((sortType, i) => checkIfEqual(i))!.name} {order === 'desc' ? "↓" : '↑'}
                 </div>
             </div>
 
@@ -76,6 +76,6 @@ const Sort = ({handleSortSelected}: { handleSortSelected: (index: number, handle
                 </div>}
         </div>
     );
-};
+});
 
 export default Sort;

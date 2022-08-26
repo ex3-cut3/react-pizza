@@ -1,15 +1,20 @@
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {useActions, useAppSelector} from "../../hooks/useRedux";
-import SearchBox from "../Features/Search/SearchBox";
 import {selectCart} from "../../store/Cart/selectors";
-import {SortVariants} from "../../store/Navigation/NavigationSlice";
+import {SortVariants} from "../../store/Navigation/NavigationTypes";
+import {lazy, Suspense} from "react";
+import {useTranslation} from "react-i18next";
+ import LanguageSelect from "../Features/LanguageSelect";
 
 const Header = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const SearchBox = lazy(() => import(/* webpackChunkName: "SearchBox" */ '../Features/Search/SearchBox'));
 
     const {totalPrice, totalItems} = useAppSelector(selectCart);
     const {setSortOptions} = useActions();
+    const {t} = useTranslation();
+    // const LanguageSelect = lazy(()=> import('../Features/LanguageSelect'))
 
     function handleLogoClick() {
         setSortOptions({
@@ -22,21 +27,23 @@ const Header = () => {
         navigate('/');
     }
 
-
     return (
         <div className = "header">
             <div className = "container">
-                <div className = "header__logo" style={{cursor: 'pointer'}} onClick={()=>handleLogoClick()}>
+                <div className = "header__logo" style = {{cursor: 'pointer'}} onClick = {() => handleLogoClick()}>
                     <img width = "38" src = {'img/pizza-logo.svg'} alt = "Pizza logo"/>
                     <div>
-                        <h1>React Pizza</h1>
-                        <p>We serve your most tasty desires!</p>
+                        <h1>{t('logoTitle')}</h1>
+                        <p>{t('headerDescription')}!</p>
                     </div>
                 </div>
 
-                {location.pathname!=='/cart' && location.pathname!=='/payment' && <SearchBox />}
+                {location.pathname !== '/cart' && location.pathname !== '/payment' &&
+                    <Suspense fallback = ''><SearchBox/></Suspense>}
 
-                {location.pathname!=='/cart' && location.pathname!=='/payment' && <div className = "header__cart">
+                <Suspense fallback = ''><LanguageSelect/></Suspense>
+
+                {location.pathname !== '/cart' && location.pathname !== '/payment' && <div className = "header__cart">
                     <Link to = "/cart" className = "button button--cart">
                         <span>{totalPrice} ₽</span>
                         <div className = "button__delimiter"></div>

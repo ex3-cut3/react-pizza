@@ -1,12 +1,14 @@
 import {useActions, useAppSelector} from "../../../hooks/useRedux";
-import {CartItem as ICartItem} from "../../../store/Cart/CartSlice";
 import {Link} from "react-router-dom";
 import CartItem from "./CartItem";
 import {selectCart} from "../../../store/Cart/selectors";
+import {CartItem as ICartItem} from "../../../store/Cart/CartTypes";
 
-function FullCart() {
+const FullCart = () => {
     const {cartItems, totalPrice, totalItems} = useAppSelector(selectCart);
     const {setCart} = useActions();
+
+    // console.log('full cart render!')
 
     function handleDeleteAllItems() {
         window.confirm('Are you sure?') && setCart([])

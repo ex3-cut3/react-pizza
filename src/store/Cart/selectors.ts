@@ -1,5 +1,5 @@
 import {RootReducerState} from "../store";
-import {CartItem} from "./CartSlice";
+import {CartItem} from "./CartTypes";
 
 export const selectCart = (state : RootReducerState) => state.cart;
 export const selectCartItemsById = (id: string) => (state: RootReducerState) =>

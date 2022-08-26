@@ -1,24 +1,14 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {fetchPizzas} from "./PizzaAC";
 import {Pizza} from "../../components/Layout/PizzaBlock/PizzaBlockList";
-
-export interface PizzaState {
-    pizzas: Pizza[];
-    allPizzas: Pizza[];
-    isLoading: boolean;
-    error: string
-}
+import {PizzaState} from "./PizzaTypes";
+import {limitArray} from "../../utils/helpers";
 
 const initialState: PizzaState = {
     pizzas: [],
     allPizzas: [],
     isLoading: false,
     error: '',
-
-}
-
-const limitArray = (array: Pizza[], limit: number, page: number) => {
-    return array.slice((page - 1) * limit, page * limit);
 }
 
 export const PizzaSlice = createSlice({

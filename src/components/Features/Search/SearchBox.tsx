@@ -1,24 +1,34 @@
 import cl from './search.module.scss';
 import {useActions, useAppSelector} from "../../../hooks/useRedux";
-import {ChangeEvent, useCallback, useState} from "react";
+import {ChangeEvent, useCallback, useEffect, useState} from "react";
 import debounce from "lodash.debounce";
 import {debounceTime} from "../../../utils/constants";
-import {selectNavigation} from "../../../store/Navigation/selectors";
+import {selectSortOptions} from "../../../store/Navigation/selectors";
+import {useTranslation} from "react-i18next";
 
 const SearchBox = () => {
-    const {sortOptions} = useAppSelector(selectNavigation);
-    const {setSortOptions,} = useActions();
-    const [localSearchQuery, setLocalSearchQuery] = useState<string>(sortOptions.searchQuery);
+
+    const {searchQuery} = useAppSelector(selectSortOptions);
+    const {setSearchQuery, setPage} = useActions();
+    const [localSearchQuery, setLocalSearchQuery] = useState<string>(searchQuery);
+    const {t} = useTranslation();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const debounceFn = useCallback(debounce((str: string) => {
-        setSortOptions({...sortOptions, searchQuery: str, page: 1});
+        setSearchQuery(str);
+        setPage(1);
     }, debounceTime), []);
+
+    // console.log('serach render')
 
     function handleSearchInput(e: ChangeEvent<HTMLInputElement>) {
         setLocalSearchQuery(e.target.value);
         debounceFn(e.target.value);
     }
+
+    useEffect(() => {
+        setLocalSearchQuery(searchQuery);
+    }, [searchQuery])
 
     return (
         <div className = {cl.search_root}>
@@ -33,7 +43,7 @@ const SearchBox = () => {
                       x2 = "20.366" y1 = "27" y2 = "20.366" data-darkreader-inline-stroke = ""
                 ></line>
             </svg>
-            <input  className = {cl.search_input} placeholder = "Поиск пиццы..." value = {localSearchQuery}
+            <input className = {cl.search_input} placeholder = {t('searchPlaceholder')+"..."} value = {localSearchQuery}
                    onChange = {(e => handleSearchInput(e))}/>
         </div>
     );

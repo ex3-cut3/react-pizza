@@ -1,47 +1,23 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {Pizza} from "../../components/Layout/PizzaBlock/PizzaBlockList";
+import {getCartStateLS} from "../../utils/getCartStateFromLS";
+import {checkUniqueCartItemPredicate, filteredCartItemsPredicate} from "../../utils/helpers";
+import {CartItem, CartState} from "./CartTypes";
 
-export interface CartItem {
-    pizza: Pizza;
-    amount: number;
-    type: number;
-    size: number;
-    finalPrice: number;
-}
+export const computeAmountOfCartItems = (arr: CartItem[]) => arr.reduce((acc: number, item: CartItem) => acc + item.amount, 0);
+export const computePriceOfCartItems = (arr: CartItem[]) => arr.reduce((acc: number, item: CartItem) => acc + item.finalPrice * item.amount, 0);
 
-export interface CartState extends Record<string, any> {
-    cartItems: CartItem[];
-    totalPrice: number;
-    totalItems: number;
-}
-
-const initialState: CartState = {
+const initialState: CartState = getCartStateLS() || {
     cartItems: [],
     totalPrice: 0,
     totalItems: 0
 };
-
-const filteredItemsPredicate = (cartItem: CartItem, payloadItem: CartItem) => {
-    return cartItem.pizza.id !== payloadItem.pizza.id || cartItem.type !== payloadItem.type || cartItem.size !== payloadItem.size;
-};
-
-const checkUniqueItemPredicate = (cartItem: CartItem, payloadItem: CartItem) => {
-    return cartItem.pizza.id === payloadItem.pizza.id && cartItem.type === payloadItem.type && cartItem.size === payloadItem.size;
-};
-
-export const reduceFn = (arr: any[], innerReduceFn: (acc: number, item: any) => any, initialValue: number = 0) => {
-    return arr.reduce((acc: number, item: any) => innerReduceFn(acc, item), initialValue);
-}
-
-const calculateAmountOfItemsFn = (acc: number, cartItem: CartItem) => acc += cartItem.amount;
-const calculateTotalPriceFn = (acc: number, cartItem: CartItem) => acc + cartItem.finalPrice * cartItem.amount;
 
 export const CartSlice = createSlice({
     name: 'cartState',
     initialState,
     reducers: {
         addToCart: (state, action: PayloadAction<CartItem>) => {
-            const item = state.cartItems.find(item => checkUniqueItemPredicate(item, action.payload));
+            const item = state.cartItems.find(item => checkUniqueCartItemPredicate(item, action.payload));
             if (item) {
                 item.amount += 1;
             } else {
@@ -50,27 +26,23 @@ export const CartSlice = createSlice({
 
             state.totalItems += 1;
             state.totalPrice += action.payload.finalPrice;
-            localStorage.setItem('cartState', JSON.stringify(state));
         },
         removeFromCart: (state, action: PayloadAction<CartItem>) => {
-            state.cartItems = state.cartItems.filter(cartItem => filteredItemsPredicate(cartItem, action.payload));
+            state.cartItems = state.cartItems.filter(cartItem => filteredCartItemsPredicate(cartItem, action.payload));
             state.totalItems -= action.payload.amount;
             state.totalPrice -= action.payload.finalPrice * action.payload.amount;
-            localStorage.setItem('cartState', JSON.stringify(state));
         },
         setCart: (state, action: PayloadAction<CartItem[]>) => {
             state.cartItems = action.payload;
-            state.totalItems = reduceFn(state.cartItems, calculateAmountOfItemsFn);
-            state.totalPrice = reduceFn(state.cartItems, calculateTotalPriceFn);
-            localStorage.setItem('cartState', JSON.stringify(state));
+            state.totalItems = computeAmountOfCartItems(state.cartItems);
+            state.totalPrice = computePriceOfCartItems(state.cartItems);
         },
         setAmount: (state, action: PayloadAction<{ item: CartItem, amount: number }>) => {
-            const item = state.cartItems.find(cartItem => checkUniqueItemPredicate(cartItem, action.payload.item));
+            const item = state.cartItems.find(cartItem => checkUniqueCartItemPredicate(cartItem, action.payload.item));
             if (item) item.amount = action.payload.amount;
 
-            state.totalItems = reduceFn(state.cartItems, calculateAmountOfItemsFn);
-            state.totalPrice = reduceFn(state.cartItems, calculateTotalPriceFn);
-            localStorage.setItem('cartState', JSON.stringify(state));
+            state.totalItems = computeAmountOfCartItems(state.cartItems);
+            state.totalPrice = computePriceOfCartItems(state.cartItems);
         },
         setCartState: (state, action: PayloadAction<CartState>) => {
             for (let stateKey in state) {

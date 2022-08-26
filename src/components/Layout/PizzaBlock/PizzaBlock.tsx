@@ -1,11 +1,11 @@
 import {Pizza} from "./PizzaBlockList";
 import {useActions, useAppSelector} from "../../../hooks/useRedux";
-import {CartItem, reduceFn} from "../../../store/Cart/CartSlice";
+import {computeAmountOfCartItems} from "../../../store/Cart/CartSlice";
 import {typeNames} from "../../../utils/constants";
-import {getMultiplier} from "../../../utils/helpers";
 import {useState} from "react";
 import {selectCartItemsById} from "../../../store/Cart/selectors";
 import {Link} from "react-router-dom";
+import {getMultiplier} from "../../../utils/getMultiplier";
 
 
 const PizzaBlock: ({item}: {item: Pizza}) => JSX.Element = ({item}) => {
@@ -29,8 +29,8 @@ const PizzaBlock: ({item}: {item: Pizza}) => JSX.Element = ({item}) => {
     }
 
     function getItemAmount() {
-        return reduceFn(cartItems, (acc: number, cartItem: CartItem) => acc += cartItem.amount, 0); // reduce and not find as multiple items with the same id but different type/size can be
-    } // and we want to get an overall number of all items with same id and different type/size
+        return computeAmountOfCartItems(cartItems);
+    }
 
     return (
         <div className = "pizza-block">
