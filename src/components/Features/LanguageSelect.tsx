@@ -27,7 +27,7 @@ const LanguageSelect = memo(() => {
 
     function changeLocale(selectedLang: string) {
         if (languageFromStore !== selectedLang) {
-            i18n.changeLanguage(selectedLang);
+            i18n.changeLanguage(selectedLang).then(r => r);
         }
     }
 
