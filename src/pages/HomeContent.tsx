@@ -111,9 +111,7 @@ const HomeContent = () => {
                 <Categories handleCategoryChange = {handleCategoryChange} isMounted = {isMounted.current}/>
                 <Sort handleSortSelected = {handleSortSelected}/>
             </div>
-            <h2 className = "content__title">{pizzas.length===0 ? "Unfortunately, we couldnt find any pizza for your" +
-                " request" :'Все' +
-                ' пиццы'}</h2>
+            <h2 className = "content__title">Все пиццы</h2>
             <PizzaBlockList/>
             <Suspense fallback= ''><Pagination totalPages = {totalPages}/></Suspense>
         </div>
