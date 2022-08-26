@@ -3,7 +3,7 @@ import {Suspense, useEffect, useRef} from "react";
 import {Route, Routes} from "react-router-dom";
 import {routes} from "./routes/routes";
 import {useAppSelector} from "./hooks/useRedux";
-import MainLayout from "./MainLayout";
+import MainLayout from "./Layouts/MainLayout";
 import {selectCart} from "./store/Cart/selectors";
 import FullLoader from "./components/Layout/Loader/FullLoader";
 

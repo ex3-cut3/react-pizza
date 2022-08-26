@@ -3,6 +3,7 @@ import {SortVariants} from "../store/Navigation/NavigationTypes";
 import {keysOfObj} from "./helpers";
 
 export const typeNames = ['тонкое', 'традиционное'];
+export const msToLeaveNotFoundPage = 3000;
 
 export const sortTypes: SortType[] = [
     {name: 'популярности', sortOrder: SortVariants.ASCENDING, convertedAsItemProperty: 'rating'},

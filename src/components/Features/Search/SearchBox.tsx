@@ -1,6 +1,6 @@
 import cl from './search.module.scss';
 import {useActions, useAppSelector} from "../../../hooks/useRedux";
-import {ChangeEvent, useCallback, useEffect, useState} from "react";
+import {ChangeEvent, useCallback, useEffect, useRef, useState} from "react";
 import debounce from "lodash.debounce";
 import {debounceTime} from "../../../utils/constants";
 import {selectSortOptions} from "../../../store/Navigation/selectors";
@@ -10,6 +10,7 @@ const SearchBox = () => {
 
     const {searchQuery} = useAppSelector(selectSortOptions);
     const {setSearchQuery, setPage} = useActions();
+    const searchInput = useRef<HTMLInputElement>(null);
     const [localSearchQuery, setLocalSearchQuery] = useState<string>(searchQuery);
     const {t} = useTranslation();
 
@@ -17,6 +18,8 @@ const SearchBox = () => {
     const debounceFn = useCallback(debounce((str: string) => {
         setSearchQuery(str);
         setPage(1);
+        searchInput.current && searchInput.current.focus({});
+
     }, debounceTime), []);
 
     // console.log('serach render')
@@ -43,7 +46,7 @@ const SearchBox = () => {
                       x2 = "20.366" y1 = "27" y2 = "20.366" data-darkreader-inline-stroke = ""
                 ></line>
             </svg>
-            <input className = {cl.search_input} placeholder = {t('searchPlaceholder')+"..."} value = {localSearchQuery}
+            <input ref={searchInput} className = {cl.search_input} placeholder = {t('searchPlaceholder')+"..."} value = {localSearchQuery}
                    onChange = {(e => handleSearchInput(e))}/>
         </div>
     );
