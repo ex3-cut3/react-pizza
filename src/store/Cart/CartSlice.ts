@@ -4,7 +4,8 @@ import {checkUniqueCartItemPredicate, filteredCartItemsPredicate} from "../../ut
 import {CartItem, CartState} from "./CartTypes";
 
 export const computeAmountOfCartItems = (arr: CartItem[]) => arr.reduce((acc: number, item: CartItem) => acc + item.amount, 0);
-export const computePriceOfCartItems = (arr: CartItem[]) => arr.reduce((acc: number, item: CartItem) => acc + item.finalPrice * item.amount, 0);
+export const computePriceOfAllCartItems = (arr: CartItem[]) => arr.reduce((acc: number, item: CartItem) =>
+    acc + item.finalPrice * item.amount, 0);
 
 const initialState: CartState = getCartStateLS() || {
     cartItems: [],
@@ -28,21 +29,22 @@ export const CartSlice = createSlice({
             state.totalPrice += action.payload.finalPrice;
         },
         removeFromCart: (state, action: PayloadAction<CartItem>) => {
-            state.cartItems = state.cartItems.filter(cartItem => filteredCartItemsPredicate(cartItem, action.payload));
-            state.totalItems -= action.payload.amount;
-            state.totalPrice -= action.payload.finalPrice * action.payload.amount;
+            const {payload: removedItem} = action;
+            state.cartItems = state.cartItems.filter(cartItem => filteredCartItemsPredicate(cartItem, removedItem));
+            state.totalItems -= removedItem.amount;
+            state.totalPrice -= removedItem.finalPrice * removedItem.amount;
         },
         setCart: (state, action: PayloadAction<CartItem[]>) => {
             state.cartItems = action.payload;
             state.totalItems = computeAmountOfCartItems(state.cartItems);
-            state.totalPrice = computePriceOfCartItems(state.cartItems);
+            state.totalPrice = computePriceOfAllCartItems(state.cartItems);
         },
         setAmount: (state, action: PayloadAction<{ item: CartItem, amount: number }>) => {
             const item = state.cartItems.find(cartItem => checkUniqueCartItemPredicate(cartItem, action.payload.item));
             if (item) item.amount = action.payload.amount;
 
             state.totalItems = computeAmountOfCartItems(state.cartItems);
-            state.totalPrice = computePriceOfCartItems(state.cartItems);
+            state.totalPrice = computePriceOfAllCartItems(state.cartItems);
         },
         setCartState: (state, action: PayloadAction<CartState>) => {
             for (let stateKey in state) {

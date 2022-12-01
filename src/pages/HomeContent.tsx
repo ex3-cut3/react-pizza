@@ -48,8 +48,8 @@ const HomeContent = () => {
         window.scrollTo(0, 0);
     }, [sortOptions.page]);
 
-    useEffect(() => {
-        const filteredPizzas = allPizzas.filter((pizza) => pizza.title.toLowerCase().includes(sortOptions.searchQuery.toLowerCase()));
+    useEffect(() => { // due to api inconsistency, filter on front
+        const filteredPizzas = allPizzas.filter((pizza) => pizza.title.toLowerCase().includes(sortOptions.searchQuery.toLowerCase()))
         setPizzas({pizzas: filteredPizzas, page: sortOptions.page, limit: pageLimit});
         setTotalPages(Math.ceil(filteredPizzas.length / pageLimit));
     }, [sortOptions.searchQuery, sortOptions.page, allPizzas, pageLimit]);
@@ -106,16 +106,16 @@ const HomeContent = () => {
     }
 
     return (
-        <div className = 'container'>
-            <div className = "content__top">
-                <Categories handleCategoryChange = {handleCategoryChange} isMounted = {isMounted.current}/>
-                <Sort handleSortSelected = {handleSortSelected}/>
+        <div className='container'>
+            <div className="content__top">
+                <Categories handleCategoryChange={handleCategoryChange} isMounted={isMounted.current}/>
+                <Sort handleSortSelected={handleSortSelected}/>
             </div>
-            <h2 className = "content__title">{pizzas.length===0 ? "Unfortunately, we couldnt find any pizza for your" +
-                " request" :'Все' +
-                ' пиццы'}</h2>
+            <h2 className="content__title">Все пиццы</h2>
             <PizzaBlockList/>
-            <Suspense fallback= ''><Pagination totalPages = {totalPages}/></Suspense>
+            <Suspense fallback=''>
+                <Pagination totalPages={totalPages}/>
+            </Suspense>
         </div>
     );
 };

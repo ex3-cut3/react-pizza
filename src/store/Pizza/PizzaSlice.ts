@@ -1,8 +1,8 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {fetchPizzas} from "./PizzaAC";
-import {Pizza} from "../../components/Layout/PizzaBlock/PizzaBlockList";
 import {PizzaState} from "./PizzaTypes";
 import {limitArray} from "../../utils/helpers";
+import {Pizza} from '../../utils/models';
 
 const initialState: PizzaState = {
     pizzas: [],
@@ -11,17 +11,23 @@ const initialState: PizzaState = {
     error: '',
 }
 
+export interface PayloadActionPizza {
+    pizzas: Pizza[],
+    page: number,
+    limit: number
+}
+
 export const PizzaSlice = createSlice({
     name: 'pizzas',
     initialState,
     reducers: {
-        setPizzas: (state, action: PayloadAction<{ pizzas: Pizza[], page: number, limit: number }>) => {
+        setPizzas: (state, action: PayloadAction<PayloadActionPizza>) => {
             const {page, limit, pizzas} = action.payload;
             state.pizzas = limitArray(pizzas, limit, page);
         }
     },
     extraReducers: {
-        [fetchPizzas.fulfilled.type]: (state, action: PayloadAction<{ pizzas: Pizza[], page: number, limit: number }>) => {
+        [fetchPizzas.fulfilled.type]: (state, action: PayloadAction<PayloadActionPizza>) => {
             const {page, limit, pizzas} = action.payload;
             state.isLoading = false;
             state.error = '';

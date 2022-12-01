@@ -18,8 +18,6 @@ const SearchBox = () => {
     const debounceFn = useCallback(debounce((str: string) => {
         setSearchQuery(str);
         setPage(1);
-        searchInput.current && searchInput.current.focus({});
-
     }, debounceTime), []);
 
     // console.log('serach render')
@@ -31,7 +29,7 @@ const SearchBox = () => {
 
     useEffect(() => {
         setLocalSearchQuery(searchQuery);
-    }, [searchQuery])
+    }, [searchQuery]);
 
     return (
         <div className = {cl.search_root}>

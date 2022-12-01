@@ -1,4 +1,4 @@
-import {computeAmountOfCartItems, computePriceOfCartItems} from "../store/Cart/CartSlice";
+import {computeAmountOfCartItems, computePriceOfAllCartItems} from "../store/Cart/CartSlice";
 import {CartState} from "../store/Cart/CartTypes";
 
 export const getCartStateLS = () => {
@@ -6,11 +6,10 @@ export const getCartStateLS = () => {
     if (!str) {
         return null;
     }
-    // console.log('localStorage.getItem')
     const cartItems = JSON.parse(str);
     return {
         cartItems,
-        totalPrice: computePriceOfCartItems(cartItems),
+        totalPrice: computePriceOfAllCartItems(cartItems),
         totalItems: computeAmountOfCartItems(cartItems),
     } as CartState;
 }

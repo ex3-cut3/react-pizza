@@ -1,8 +1,8 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import axios, {AxiosError} from "axios";
-import {Pizza} from "../../components/Layout/PizzaBlock/PizzaBlockList";
 import {RejectedWithValueActionFromAsyncThunk} from "@reduxjs/toolkit/dist/matchers";
 import {SortOptions} from "../Navigation/NavigationTypes";
+import {Pizza} from '../../utils/models';
 
 export type FetchPizzasArgs = {
     sortOptions: SortOptions;
@@ -21,7 +21,7 @@ export const fetchPizzas = createAsyncThunk<Pizza[] | RejectedWithValueActionFro
         ); // &page=${page}&limit=${limit}
         return {pizzas: response.data, page, limit};
     } catch (e: unknown) {
-        // console.log(e);
+        console.log(e);
         const {response} = e as AxiosError;
         return thunkAPI.rejectWithValue(
             "Unable to load pizzas 😒! " + response?.data

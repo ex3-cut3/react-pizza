@@ -1,4 +1,4 @@
-import {Pizza} from "../../components/Layout/PizzaBlock/PizzaBlockList";
+import {Pizza} from '../../utils/models';
 
 export interface PizzaState {
     pizzas: Pizza[];

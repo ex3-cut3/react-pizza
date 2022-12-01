@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {Pizza} from "../../components/Layout/PizzaBlock/PizzaBlockList";
-import {NavigationState, SortOptions, SortVariants} from "./NavigationTypes";
+import {NavigationState, SortOptions, SortOrderVariants} from "./NavigationTypes";
 import {keysOfObj} from "../../utils/helpers";
+import {Pizza} from '../../utils/models';
 
 const initialState: NavigationState = {
     pageLimit: 6,
@@ -9,7 +9,7 @@ const initialState: NavigationState = {
     sortOptions: {
         category: 0,
         sortBy: 'rating',
-        order: SortVariants.ASCENDING,
+        order: SortOrderVariants.ASCENDING,
         page: 1,
         searchQuery: '',
     }
@@ -41,7 +41,7 @@ export const NavigationSlice = createSlice({
         setSortBy: (state, action: PayloadAction<keysOfObj<Pizza>>) => {
             state.sortOptions.sortBy = action.payload;
         },
-        setOrder: (state, action: PayloadAction<SortVariants>) => {
+        setOrder: (state, action: PayloadAction<SortOrderVariants>) => {
             state.sortOptions.order = action.payload;
         },
     }

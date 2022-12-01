@@ -4,7 +4,7 @@ import navigationReducer, {navigationActions} from "./Navigation/NavigationSlice
 import cartReducer, {CartSlice} from "./Cart/CartSlice";
 import {pizzasAPI} from "./services/PizzasService";
 import {fetchPizzas} from "./Pizza/PizzaAC";
-import LanguageSlice, {languageActions} from "./Languages/LanguageSlice";
+import LanguageSlice, {languageActions} from "./Language/LanguageSlice";
 
 export const rootReducer = combineReducers({
     pizza: pizzaReducer,

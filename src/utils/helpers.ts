@@ -1,7 +1,8 @@
 import {CartItem} from "../store/Cart/CartTypes";
-import {Pizza} from "../components/Layout/PizzaBlock/PizzaBlockList";
+import {Pizza} from './models';
+import {SortOrderVariants} from '../store/Navigation/NavigationTypes';
 
-export function instanceOfSortVariants(str: string) {
+export function instanceOfSortVariants(str: SortOrderVariants | string) {
     return str === 'asc' || str === 'desc';
 }
 
@@ -15,6 +16,6 @@ export const checkUniqueCartItemPredicate = (cartItem: CartItem, payloadItem: Ca
 
 export type keysOfObj<T> = keyof T;
 
-export const limitArray = (array: Pizza[], limit: number, page: number) => {
+export const limitArray = <T>(array: T[], limit: number, page: number) => {
     return array.slice((page - 1) * limit, page * limit);
 }

@@ -1,10 +1,10 @@
-import React, {memo} from 'react';
+import React from 'react';
 import {typeNames} from "../../../utils/constants";
 import {useActions} from "../../../hooks/useRedux";
 import clsx from "clsx";
 import {CartItem as ICartItem} from "../../../store/Cart/CartTypes";
 
-const CartItem = memo(({item}: { item: ICartItem }) => {
+const CartItem = ({item}: { item: ICartItem }) => {
     const {removeFromCart, setAmount,} = useActions();
 
     // console.log('cart item render!')
@@ -88,6 +88,6 @@ const CartItem = memo(({item}: { item: ICartItem }) => {
             </div>
         </div>
     );
-})
+}
 
 export default CartItem;

@@ -3,9 +3,11 @@ import Header from "../components/Layout/Header";
 import {Outlet} from "react-router-dom";
 
 const MainLayout = () => {
+
     return (
         <div className = "wrapper">
             <Header/>
+
             <div className = "content">
                 <Outlet/>
             </div>

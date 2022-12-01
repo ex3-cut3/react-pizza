@@ -1,7 +1,7 @@
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {useActions, useAppSelector} from "../../hooks/useRedux";
 import {selectCart} from "../../store/Cart/selectors";
-import {SortVariants} from "../../store/Navigation/NavigationTypes";
+import {SortOrderVariants} from "../../store/Navigation/NavigationTypes";
 import {lazy, Suspense} from "react";
 import {useTranslation} from "react-i18next";
  import LanguageSelect from "../Features/LanguageSelect";
@@ -20,7 +20,7 @@ const Header = () => {
         setSortOptions({
             sortBy: 'rating',
             category: 0,
-            order: SortVariants.ASCENDING,
+            order: SortOrderVariants.ASCENDING,
             page: 1,
             searchQuery: ''
         });

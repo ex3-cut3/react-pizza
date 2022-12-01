@@ -54,11 +54,9 @@ const FullCart = () => {
                     </div>}
                 </div>
 
-
                 {cartItems.map((item: ICartItem) =>
                     <CartItem key = {item.pizza.id + item.size + item.type} item = {item}/>
                 )}
-
 
                 <div className = "cart__bottom">
                     <div className = "cart__bottom-details">

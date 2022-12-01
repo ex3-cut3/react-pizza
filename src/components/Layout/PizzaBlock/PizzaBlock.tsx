@@ -1,4 +1,3 @@
-import {Pizza} from "./PizzaBlockList";
 import {useActions, useAppSelector} from "../../../hooks/useRedux";
 import {computeAmountOfCartItems} from "../../../store/Cart/CartSlice";
 import {typeNames} from "../../../utils/constants";
@@ -6,9 +5,10 @@ import {useState} from "react";
 import {selectCartItemsById} from "../../../store/Cart/selectors";
 import {Link} from "react-router-dom";
 import {getMultiplier} from "../../../utils/getMultiplier";
+import {Pizza} from '../../../utils/models';
 
 
-const PizzaBlock: ({item}: {item: Pizza}) => JSX.Element = ({item}) => {
+const PizzaBlock: ({item}: { item: Pizza }) => JSX.Element = ({item}) => {
     const [activeType, setActiveType] = useState<number>(item.types[0]);
     const [activeSize, setActiveSize] = useState<number>(item.sizes[0]);
 
@@ -17,14 +17,22 @@ const PizzaBlock: ({item}: {item: Pizza}) => JSX.Element = ({item}) => {
     const {id, types, price, imageUrl, title, sizes, rating} = item;
 
     function onAddPizza(item: Pizza) {
-        addToCart({pizza: item, amount: 1, type: activeType, size: activeSize, finalPrice: getMultiplier(activeSize) * price});
+        addToCart({
+            pizza: item,
+            amount: 1,
+            type: activeType,
+            size: activeSize,
+            finalPrice: getMultiplier(activeSize) * price
+        });
     }
 
     function handleTypeClick(type: number) {
+        if (type === activeType) return;
         setActiveType(type);
     }
 
     function handleSizeClick(sizeIdx: number) {
+        if (activeSize === sizeIdx) return;
         setActiveSize(sizeIdx);
     }
 
@@ -33,24 +41,24 @@ const PizzaBlock: ({item}: {item: Pizza}) => JSX.Element = ({item}) => {
     }
 
     return (
-        <div className = "pizza-block">
-            <Link to= {`/pizza/${item.id}`}>
-            <img
-                className = "pizza-block__image"
-                src = {imageUrl}
-                alt = "Pizza"
-            />
-            <h4  className = "pizza-block__title">{title}</h4>
+        <div className="pizza-block">
+            <Link to={`/pizza/${item.id}`}>
+                <img
+                    className="pizza-block__image"
+                    src={imageUrl}
+                    alt="Pizza"
+                />
+                <h4 className="pizza-block__title">{title}</h4>
             </Link>
-            <div className = "pizza-block__selector">
+            <div className="pizza-block__selector">
                 <ul>
-                    {types.map((type, idx) => <li key = {idx} onClick = {() => handleTypeClick(type)}
-                                                  className = {`${activeType === type ? 'active' : ''}`}>{typeNames[type]}</li>)}
+                    {types.map((type, idx) => <li key={idx} onClick={() => handleTypeClick(type)}
+                                                  className={`${activeType === type ? 'active' : ''}`}>{typeNames[type]}</li>)}
                 </ul>
                 <ul>
                     {
-                        sizes.map((size, idx) => <li className = {`${activeSize === size ? 'active' : ''}`}
-                                                     key = {idx}
+                        sizes.map((size, idx) => <li className={`${activeSize === size ? 'active' : ''}`}
+                                                     key={idx}
                                                      onClick = {() => handleSizeClick(size)}>{size} см.</li>)
                     }
                 </ul>

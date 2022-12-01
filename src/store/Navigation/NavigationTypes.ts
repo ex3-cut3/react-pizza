@@ -1,7 +1,7 @@
-import {Pizza} from "../../components/Layout/PizzaBlock/PizzaBlockList";
 import {keysOfObj} from "../../utils/helpers";
+import {Pizza} from '../../utils/models';
 
-export enum SortVariants {
+export enum SortOrderVariants {
     ASCENDING = 'asc',
     DESCENDING = 'desc',
 }
@@ -9,7 +9,7 @@ export enum SortVariants {
 export interface SortOptions {
     sortBy: keysOfObj<Pizza>;
     category: number;
-    order: SortVariants;
+    order: SortOrderVariants;
     page: number;
     searchQuery: string;
 }

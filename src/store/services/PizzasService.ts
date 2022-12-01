@@ -1,5 +1,5 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
-import {Pizza} from "../../components/Layout/PizzaBlock/PizzaBlockList";
+import {Pizza} from '../../utils/models';
 
 export const pizzasAPI = createApi({
     reducerPath: 'pizzaAPI',

@@ -1,35 +1,23 @@
-import {Pizza} from "../components/Layout/PizzaBlock/PizzaBlockList";
-import {SortVariants} from "../store/Navigation/NavigationTypes";
-import {keysOfObj} from "./helpers";
+import {SortOrderVariants} from "../store/Navigation/NavigationTypes";
+import {Language, SortType} from './models';
 
 export const typeNames = ['тонкое', 'традиционное'];
+export const skeletonsAmount = 6;
 export const msToLeaveNotFoundPage = 3000;
 
 export const sortTypes: SortType[] = [
-    {name: 'популярности', sortOrder: SortVariants.ASCENDING, convertedAsItemProperty: 'rating'},
-    {name: 'популярности', sortOrder: SortVariants.DESCENDING, convertedAsItemProperty: 'rating'},
-    {name: 'алфавиту', sortOrder: SortVariants.ASCENDING, convertedAsItemProperty: 'title'},
-    {name: 'алфавиту', sortOrder: SortVariants.DESCENDING, convertedAsItemProperty: 'title'},
-    {name: 'цене', sortOrder: SortVariants.ASCENDING, convertedAsItemProperty: 'price'},
-    {name: 'цене', sortOrder: SortVariants.DESCENDING, convertedAsItemProperty: 'price'},
+    {name: 'популярности', sortOrder: SortOrderVariants.ASCENDING, convertedAsItemProperty: 'rating'},
+    {name: 'популярности', sortOrder: SortOrderVariants.DESCENDING, convertedAsItemProperty: 'rating'},
+    {name: 'алфавиту', sortOrder: SortOrderVariants.ASCENDING, convertedAsItemProperty: 'title'},
+    {name: 'алфавиту', sortOrder: SortOrderVariants.DESCENDING, convertedAsItemProperty: 'title'},
+    {name: 'цене', sortOrder: SortOrderVariants.ASCENDING, convertedAsItemProperty: 'price'},
+    {name: 'цене', sortOrder: SortOrderVariants.DESCENDING, convertedAsItemProperty: 'price'},
 ];
-
-interface Language {
-    name: string,
-    flag: string,
-    shortName: string,
-}
 
 export const languages: Language[] = [
     {name: 'english', flag: '🇺🇸', shortName: 'en'},
     {name: 'ukrainian', flag: '🇺🇦', shortName: 'ukr'}
 ]
-
-export interface SortType {
-    name: string,
-    sortOrder: SortVariants,
-    convertedAsItemProperty: keysOfObj<Pizza>
-}
 
 export enum PRICE_MULTIPLIERS {
     SMALL_SIZE = 1,
